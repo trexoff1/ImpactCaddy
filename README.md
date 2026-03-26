@@ -1,209 +1,167 @@
-# GolfGives
+# ImpactCaddy
 
-GolfGives is a subscription-based golf and charity platform built with Next.js, Supabase, and Stripe.
-
-Users can:
-- Sign up and subscribe (monthly or yearly)
-- Log Stableford scores (latest 5 retained)
-- Join monthly draws
-- Support charities
-- Track winnings and payout status
-
-Admins can:
-- Run draw simulations before publishing
-- Publish official draw results
-- Verify winners and move payout state from pending to paid
-
-## Features
-
-### Subscriber Features
-- Authentication (signup/login/logout)
-- Profile management
-- Stripe subscription checkout and billing portal
-- Subscription status and renewal date in dashboard
-- Score management with 5-score rolling logic
-- Draw entry flow
-- Leaderboard
-- Charity selection and impact display
-- Winnings page with proof submission
-
-### Admin Features
-- Admin-protected routes
-- Draw simulation (random or algorithmic)
-- Draw publishing
-- Winner management and payout state workflow
+A subscription-based golf and charity platform built with Next.js 15, Supabase, and Stripe. Players subscribe, log Stableford scores, enter monthly draws, and direct a portion of their subscription to a charity of their choice.
 
 ## Tech Stack
 
 - Next.js 15 (App Router)
 - React 19
 - TypeScript
+- Tailwind CSS v4
 - Supabase (Auth + Postgres + RLS)
-- Stripe (subscriptions + billing portal + webhooks)
+- Stripe (subscriptions, billing portal, webhooks)
 
 ## Project Structure
 
-- src/app: pages, layouts, API routes
-- src/lib: helper modules for Supabase, Stripe, draw engine, admin auth
-- supabase/schema.sql: full database schema and RLS policies
-- .env.example: required environment variables
+```
+src/
+  app/
+    auth/login/       # Login page (page.tsx + LoginPageClient.tsx)
+    auth/signup/      # Signup page
+    dashboard/        # User dashboard (scores, draws, leaderboard, winnings, profile, charity)
+    admin/            # Admin pages (draws, winners, users, charities)
+    api/              # API routes (stripe, admin, auth, winnings)
+  lib/
+    supabase/         # Supabase client, server, admin, middleware helpers
+    stripe.ts         # Stripe client
+    draw-engine.ts    # Draw simulation logic
+    admin-auth.ts     # Admin route protection
+    types.ts          # Shared domain types
+supabase/
+  schema.sql          # Full DB schema, RLS policies, triggers, seed data
+```
+
+## Subscription Tiers
+
+Each tier is available monthly or yearly.
+
+## Features
+
+### User
+- Signup / login / logout
+- Stripe subscription checkout and billing portal
+- Stableford score tracking (rolling 5-score max)
+- Monthly draw entry
+- Charity selection with configurable contribution %
+- Leaderboard
+- Winnings page with proof submission
+
+### Admin
+- Draw simulation (random or algorithmic)
+- Draw publishing
+- Winner management (pending → paid workflow)
+- User and charity management
 
 ## Prerequisites
 
-- Node.js 18+ (recommended 20+)
+- Node.js 18+
 - npm
 - Supabase project
 - Stripe account
-- Stripe CLI (recommended for local webhook testing)
+- Stripe CLI (for local webhook testing)
 
-## Setup Guide
+## Setup
 
 ### 1. Install dependencies
 
-Run in project root:
-
+```bash
 npm install
+```
 
-### 2. Create env file
+### 2. Configure environment
 
-Create a new file named .env in the project root and copy values from .env.example.
+Copy `.env.example` to `.env` and fill in all values:
 
-Required values:
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
 
-- NEXT_PUBLIC_SUPABASE_URL
-- NEXT_PUBLIC_SUPABASE_ANON_KEY
-- SUPABASE_SERVICE_ROLE_KEY
-- STRIPE_SECRET_KEY
-- NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-- STRIPE_WEBHOOK_SECRET
-- STRIPE_PRICE_BIRDIE_MONTHLY
-- STRIPE_PRICE_BIRDIE_YEARLY
-- STRIPE_PRICE_EAGLE_MONTHLY
-- STRIPE_PRICE_EAGLE_YEARLY
-- STRIPE_PRICE_ALBATROSS_MONTHLY
-- STRIPE_PRICE_ALBATROSS_YEARLY
-- NEXT_PUBLIC_APP_URL
+STRIPE_SECRET_KEY=
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_PRICE_BIRDIE_MONTHLY=
+STRIPE_PRICE_BIRDIE_YEARLY=
+STRIPE_PRICE_EAGLE_MONTHLY=
+STRIPE_PRICE_EAGLE_YEARLY=
+STRIPE_PRICE_ALBATROSS_MONTHLY=
+STRIPE_PRICE_ALBATROSS_YEARLY=
 
-### 3. Setup Supabase database
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-1. Open Supabase SQL Editor.
-2. Paste and execute supabase/schema.sql.
-3. Confirm tables exist, including:
-   - profiles
-   - subscriptions
-   - scores
-   - draws
-   - draw_entries
-   - draw_results
-   - draw_winners
+### 3. Set up Supabase
 
-### 4. Setup Stripe products and prices
+1. Open the Supabase SQL Editor.
+2. Run `supabase/schema.sql` — this creates all tables, RLS policies, triggers, and seeds 5 charities.
+3. Confirm these tables exist: `profiles`, `subscriptions`, `scores`, `draws`, `draw_entries`, `draw_results`, `draw_winners`, `winner_verifications`, `charities`, `transactions`.
 
-Create recurring prices for each plan/interval:
+### 4. Set up Stripe products
 
-- Birdie Monthly
-- Birdie Yearly
-- Eagle Monthly
-- Eagle Yearly
-- Albatross Monthly
-- Albatross Yearly
+Create recurring prices for each plan/interval and copy the price IDs into the matching `STRIPE_PRICE_*` env vars.
 
-Copy each Stripe price id into matching env variables.
+### 5. Set up Stripe webhook
 
-### 5. Setup Stripe webhook
+Endpoint: `POST /api/stripe/webhook`
 
-Create a webhook endpoint:
+Required events:
+- `checkout.session.completed`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
 
-- Local: http://localhost:3000/api/stripe/webhook
-- Production: https://your-domain/api/stripe/webhook
+For local development:
 
-Enable events:
+```bash
+stripe login
+stripe listen --forward-to localhost:3000/api/stripe/webhook
+```
 
-- checkout.session.completed
-- customer.subscription.updated
-- customer.subscription.deleted
-
-Copy the webhook signing secret to STRIPE_WEBHOOK_SECRET.
-
-For local development with Stripe CLI:
-
-1. stripe login
-2. stripe listen --forward-to localhost:3000/api/stripe/webhook
-3. Use printed signing secret for local STRIPE_WEBHOOK_SECRET
+Copy the printed signing secret to `STRIPE_WEBHOOK_SECRET`.
 
 ### 6. Run the app
 
+```bash
 npm run dev
+```
 
-Open http://localhost:3000
+Open [http://localhost:3000](http://localhost:3000).
 
 ## Admin Access
 
-Admin pages are protected and require profiles.is_admin = true.
+Admin routes are protected by `profiles.is_admin = true`.
 
 To promote a user:
 
-1. Open Supabase SQL Editor.
-2. Run:
+```sql
+UPDATE profiles SET is_admin = true WHERE id = 'YOUR_USER_UUID';
+```
 
-update profiles set is_admin = true where id = 'YOUR_USER_UUID';
-
-3. Sign out and sign in again.
-4. Visit /admin.
-
-Admin routes:
-- /admin
-- /admin/draws
-- /admin/winners
+Then sign out and back in. Admin routes: `/admin`, `/admin/draws`, `/admin/winners`, `/admin/users`, `/admin/charities`.
 
 ## Available Scripts
 
-- npm run dev: start development server
-- npm run build: production build
-- npm run start: run production server
-- npm run lint: lint codebase
-
-## Testing Checklist
-
-- Signup and login works
-- Profile save works
-- Stripe checkout redirects and completes
-- Webhook updates subscription status
-- Dashboard shows subscription status and renewal date
-- Score creation/edit/deletion works and keeps latest 5
-- Draw entry works
-- Admin simulation and publish works
-- Winner verification status updates work
-- Winnings page proof submission works
+```bash
+npm run dev      # Start development server
+npm run build    # Production build
+npm run start    # Run production server
+npm run lint     # Lint codebase
+```
 
 ## Troubleshooting
 
-### Webhook not updating subscription
+**Login page not loading** — ensure the file is `src/app/auth/login/page.tsx` (lowercase `p`). Next.js App Router only recognises lowercase `page.tsx` as a route entry point.
 
-- Verify STRIPE_WEBHOOK_SECRET is correct
-- Verify webhook endpoint URL
-- Check Stripe event delivery logs
+**Webhook not updating subscription** — verify `STRIPE_WEBHOOK_SECRET` and check Stripe event delivery logs.
 
-### Checkout fails with missing price
+**Checkout fails with missing price** — one or more `STRIPE_PRICE_*` env vars are empty or incorrect.
 
-- One or more STRIPE_PRICE_* values are empty or incorrect
+**Admin pages redirect to dashboard** — `profiles.is_admin` is `false` for your user.
 
-### Admin pages redirect to dashboard
+**API unauthorized errors** — ensure the user is signed in and Supabase URL/keys are valid.
 
-- profiles.is_admin is false for your user
+## Deployment
 
-### API unauthorized errors
-
-- Ensure user is logged in
-- Ensure Supabase URL/keys are valid
-
-## Deployment Notes
-
-- Set all env variables in your hosting platform
-- Set NEXT_PUBLIC_APP_URL to deployed URL
-- Use production Stripe keys and webhook endpoint
-- Re-run Supabase schema if deploying to a fresh project
-
-## Notes
-
-- The root layout uses suppressHydrationWarning to avoid false hydration warnings from external runtime-injected attributes in some environments.
+- Set all env vars on your hosting platform.
+- Set `NEXT_PUBLIC_APP_URL` to your deployed domain.
+- Use production Stripe keys and webhook endpoint.
+- Re-run `supabase/schema.sql` if deploying to a fresh Supabase project.
