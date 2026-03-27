@@ -79,6 +79,7 @@ export default function UsersTable({ initialUsers }: { initialUsers: User[] }) {
   return (
     <div>
       <div className="glass-card" style={{ overflow: "hidden" }}>
+        <div className="table-responsive">
         <table className="data-table">
           <thead>
             <tr style={{ fontFamily: "var(--font-heading)" }}>
@@ -113,18 +114,19 @@ export default function UsersTable({ initialUsers }: { initialUsers: User[] }) {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {editingUser && (
-        <div className="modal-overlay" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", backdropFilter: "blur(10px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-          <div className="glass-card fade-in" style={{ padding: 48, width: "100%", maxWidth: 520, position: "relative" }}>
+        <div className="modal-overlay">
+          <div className="glass-card fade-in modal-inner">
             <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.75rem", marginBottom: 32, letterSpacing: "-0.04em" }}>Edit User Legacy</h2>
-            <form onSubmit={handleUpdateUser} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            <form onSubmit={handleUpdateUser} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               <div>
                 <label className="input-label" style={{ marginTop: 0 }}>Golfer Profile Name</label>
                 <input className="input-field" value={editingUser.display_name} onChange={(e) => setEditingUser({ ...editingUser, display_name: e.target.value })} />
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+              <div className="form-grid">
                 <div>
                   <label className="input-label" style={{ marginTop: 0 }}>Handicap</label>
                   <input className="input-field" type="number" step="0.1" value={editingUser.handicap || ""} onChange={(e) => setEditingUser({ ...editingUser, handicap: e.target.value ? parseFloat(e.target.value) : null })} />
@@ -134,7 +136,7 @@ export default function UsersTable({ initialUsers }: { initialUsers: User[] }) {
                   <input className="input-field" value={editingUser.home_course || ""} onChange={(e) => setEditingUser({ ...editingUser, home_course: e.target.value })} />
                 </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+              <div className="form-grid">
                 <div>
                   <label className="input-label" style={{ marginTop: 0 }}>Membership Tier</label>
                   <select className="input-field" value={editingUser.subscription_tier} onChange={(e) => setEditingUser({ ...editingUser, subscription_tier: e.target.value })}>
@@ -153,7 +155,7 @@ export default function UsersTable({ initialUsers }: { initialUsers: User[] }) {
                   </select>
                 </div>
               </div>
-              <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
+              <div style={{ display: "flex", gap: 16, marginTop: 8 }}>
                 <button type="submit" className="btn btn-accent premium-glow" style={{ flex: 1 }}>Save Changes</button>
                 <button type="button" className="btn btn-ghost" onClick={() => setEditingUser(null)} style={{ flex: 1 }}>Cancel</button>
               </div>
@@ -163,8 +165,8 @@ export default function UsersTable({ initialUsers }: { initialUsers: User[] }) {
       )}
 
       {viewingScoresUser && (
-        <div className="modal-overlay" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-          <div className="glass-card slide-up" style={{ padding: 32, width: "100%", maxWidth: 600 }}>
+        <div className="modal-overlay">
+          <div className="glass-card slide-up scores-modal-inner">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
               <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.25rem" }}>Scores: {viewingScoresUser.display_name}</h2>
               <button className="btn btn-ghost btn-sm" onClick={() => setViewingScoresUser(null)}>✕</button>

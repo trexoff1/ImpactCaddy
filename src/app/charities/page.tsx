@@ -43,14 +43,14 @@ export default function CharityDirectoryPage() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--color-bg-primary)" }} className="fade-in">
       {/* Nav */}
-      <nav style={{ padding: "20px 32px", borderBottom: "1px solid var(--color-border)", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0,0,0,0.5)", backdropFilter: "blur(20px)", position: "sticky", top: 0, zIndex: 100 }}>
+      <nav style={{ padding: "14px 20px", borderBottom: "1px solid var(--color-border)", display: "flex", justifyContent: "space-between", alignItems: "center", background: "rgba(0,0,0,0.5)", backdropFilter: "blur(20px)", position: "sticky", top: 0, zIndex: 100 }}>
         <Link href="/" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.25rem", letterSpacing: "-0.04em", color: "var(--color-text-primary)", textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ color: "var(--color-impact-400)" }}>✨</span> ImpactCaddy
         </Link>
         <Link href="/auth/signup" className="btn btn-accent btn-sm premium-glow">Start Your Impact</Link>
       </nav>
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "80px 24px" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 20px" }}>
         <div style={{ marginBottom: 60 }}>
           <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(2.5rem, 5vw, 4rem)", marginBottom: 16, letterSpacing: "-0.05em" }}>
             The Impact Portfolio
@@ -61,7 +61,7 @@ export default function CharityDirectoryPage() {
         </div>
 
         {/* Search */}
-        <div style={{ marginBottom: 60, maxWidth: 400 }}>
+        <div style={{ marginBottom: 40, maxWidth: "100%" }}>
           <div style={{ color: "var(--color-text-muted)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12, fontWeight: 700 }}>Search Missions</div>
           <input
             className="input-field"

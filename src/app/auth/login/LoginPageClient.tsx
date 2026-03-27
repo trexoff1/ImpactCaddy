@@ -50,7 +50,7 @@ function LoginPageContent() {
     >
       <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: "400px", height: "400px", background: "radial-gradient(circle, rgba(14,165,233,0.05) 0%, transparent 70%)", zIndex: 0 }}></div>
 
-      <div className="glass-card fade-in" style={{ maxWidth: 420, width: "100%", padding: 60, position: "relative", zIndex: 1 }}>
+      <div className="glass-card fade-in" style={{ maxWidth: 420, width: "100%", padding: "40px 32px", position: "relative", zIndex: 1 }}>
         {/* Logo */}
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <div

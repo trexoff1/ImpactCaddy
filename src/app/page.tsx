@@ -26,7 +26,7 @@ export default async function HomePage() {
           left: 0,
           right: 0,
           zIndex: 100,
-          padding: "20px 32px",
+          padding: "16px 20px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -39,7 +39,7 @@ export default async function HomePage() {
           style={{
             fontFamily: "var(--font-heading)",
             fontWeight: 700,
-            fontSize: "1.4rem",
+            fontSize: "1.25rem",
             letterSpacing: "-0.04em",
             color: "var(--color-text-primary)",
             display: "flex",
@@ -49,10 +49,10 @@ export default async function HomePage() {
         >
           <span style={{ color: "var(--color-impact-400)" }}>✨</span> ImpactCaddy
         </div>
-        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-          <Link href="/charities" style={{ color: "var(--color-text-secondary)", textDecoration: "none", fontSize: "0.9rem", fontWeight: 500 }} className="btn-ghost btn-sm">Global Impact</Link>
-          <Link href="/auth/login" style={{ color: "var(--color-text-secondary)", textDecoration: "none", fontSize: "0.9rem", fontWeight: 500 }} className="btn-ghost btn-sm">Sign In</Link>
-          <Link href="/auth/signup" className="btn btn-accent btn-sm premium-glow">Join the Movement</Link>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <Link href="/charities" style={{ color: "var(--color-text-secondary)", textDecoration: "none", fontSize: "0.875rem", fontWeight: 500 }} className="btn-ghost btn-sm home-nav-link">Global Impact</Link>
+          <Link href="/auth/login" style={{ color: "var(--color-text-secondary)", textDecoration: "none", fontSize: "0.875rem", fontWeight: 500 }} className="btn-ghost btn-sm">Sign In</Link>
+          <Link href="/auth/signup" className="btn btn-accent btn-sm premium-glow">Join</Link>
         </div>
       </nav>
 
@@ -65,7 +65,7 @@ export default async function HomePage() {
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          padding: "160px 24px 100px",
+          padding: "120px 20px 80px",
           position: "relative",
           overflow: "hidden"
         }}
@@ -119,25 +119,14 @@ export default async function HomePage() {
         </div>
 
         {/* Global Stats Split */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 60,
-            marginTop: 100,
-            maxWidth: 900,
-            width: "100%",
-            position: "relative",
-            zIndex: 1
-          }}
-        >
+        <div className="hero-stats-grid">
           {[
             { value: "₹1,42,500", label: "Direct Impact Raised", color: "var(--color-impact-400)" },
             { value: "2,400+", label: "Golfer Legacies", color: "#fff" },
             { value: "62", label: "Missions Completed", color: "#fff" },
           ].map((s) => (
             <div key={s.label} style={{ textAlign: "center" }}>
-              <div style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "2.5rem", color: s.color }}>{s.value}</div>
+              <div style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "clamp(1.5rem, 4vw, 2.5rem)", color: s.color }}>{s.value}</div>
               <div style={{ color: "var(--color-text-muted)", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.1em", marginTop: 8 }}>{s.label}</div>
             </div>
           ))}
@@ -148,7 +137,7 @@ export default async function HomePage() {
       <section
         id="how-it-works"
         style={{
-          padding: "140px 24px",
+          padding: "80px 20px",
           maxWidth: 1100,
           margin: "0 auto",
         }}
@@ -192,7 +181,7 @@ export default async function HomePage() {
       {/* ─── Featured Impact Portfolio ─── */}
       <section
         style={{
-          padding: "140px 24px",
+          padding: "80px 20px",
           background: "linear-gradient(to bottom, transparent, var(--color-bg-secondary))",
           borderTop: "1px solid var(--color-border)",
         }}
@@ -205,17 +194,17 @@ export default async function HomePage() {
 
           {/* Spotlight Hero Card */}
           {featured && (
-            <div className="glass-card" style={{ padding: 60, marginBottom: 40, position: "relative", overflow: "hidden", display: "flex", gap: 60, alignItems: "center", flexWrap: "wrap", border: "1px solid var(--color-impact-400)" }}>
+            <div className="glass-card" style={{ padding: "40px 32px", marginBottom: 40, position: "relative", overflow: "hidden", display: "flex", gap: 40, alignItems: "center", flexWrap: "wrap", border: "1px solid var(--color-impact-400)" }}>
               <div style={{ position: "absolute", bottom: -50, right: -50, width: 300, height: 300, background: "radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%)", zIndex: 0 }}></div>
-              <div style={{ flex: 1, minWidth: 300, position: "relative", zIndex: 1 }}>
+              <div style={{ flex: 1, minWidth: 260, position: "relative", zIndex: 1 }}>
                 <div style={{ color: "var(--color-impact-400)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", fontSize: "0.75rem", marginBottom: 12 }}>Spotlight Mission</div>
-                <h3 style={{ fontSize: "2.5rem", marginBottom: 20 }}>{featured.name}</h3>
-                <p style={{ color: "var(--color-text-secondary)", fontSize: "1.25rem", lineHeight: 1.6, marginBottom: 32 }}>{featured.description}</p>
-                <div style={{ display: "flex", gap: 40, marginBottom: 40 }}>
-                  <div><div style={{ fontSize: "2rem", fontWeight: 700, color: "#fff" }}>{formatCurrency(featured.total_raised || 0)}</div><div style={{ color: "var(--color-text-muted)", fontSize: "0.8rem" }}>Impact Generated</div></div>
-                  <div><div style={{ fontSize: "2rem", fontWeight: 700, color: "#fff" }}>{featured.supporter_count || 0}</div><div style={{ color: "var(--color-text-muted)", fontSize: "0.8rem" }}>Advocates</div></div>
+                <h3 style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)", marginBottom: 20 }}>{featured.name}</h3>
+                <p style={{ color: "var(--color-text-secondary)", fontSize: "1.0625rem", lineHeight: 1.6, marginBottom: 32 }}>{featured.description}</p>
+                <div style={{ display: "flex", gap: 32, marginBottom: 32, flexWrap: "wrap" }}>
+                  <div><div style={{ fontSize: "1.75rem", fontWeight: 700, color: "#fff" }}>{formatCurrency(featured.total_raised || 0)}</div><div style={{ color: "var(--color-text-muted)", fontSize: "0.8rem" }}>Impact Generated</div></div>
+                  <div><div style={{ fontSize: "1.75rem", fontWeight: 700, color: "#fff" }}>{featured.supporter_count || 0}</div><div style={{ color: "var(--color-text-muted)", fontSize: "0.8rem" }}>Advocates</div></div>
                 </div>
-                <div style={{ display: "flex", gap: 16 }}>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                   <Link href={`/charities/${featured.slug}`} className="btn btn-primary">View Full Profile</Link>
                   <Link href="/auth/signup" className="btn btn-accent premium-glow">Support This Mission</Link>
                 </div>
@@ -239,7 +228,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─── Commitment Tiers ─── */}
-      <section style={{ padding: "140px 24px" }}>
+      <section style={{ padding: "80px 20px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 80 }}>
             <h2 style={{ fontSize: "3.5rem", marginBottom: 16 }}>Join the Movement</h2>
@@ -273,7 +262,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─── Minimal Footer ─── */}
-      <footer style={{ padding: "100px 24px 60px", borderTop: "1px solid var(--color-border)", textAlign: "center", color: "var(--color-text-muted)" }}>
+      <footer style={{ padding: "60px 20px 40px", borderTop: "1px solid var(--color-border)", textAlign: "center", color: "var(--color-text-muted)" }}>
         <div style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.5rem", letterSpacing: "-0.04em", marginBottom: 16, color: "#fff" }}>ImpactCaddy</div>
         <p style={{ marginBottom: 40 }}>A legacy of impact through the spirit of play.</p>
         <div style={{ display: "flex", justifyContent: "center", gap: 32, fontSize: "0.875rem" }}>

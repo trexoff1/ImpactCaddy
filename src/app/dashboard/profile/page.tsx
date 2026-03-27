@@ -157,7 +157,7 @@ export default function ProfilePage() {
         Manage your ImpactCaddy profile and settings.
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28 }}>
+      <div className="grid-2col">
         {/* Profile form */}
         <div className="glass-card" style={{ padding: 28 }}>
           <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.125rem", marginBottom: 20 }}>

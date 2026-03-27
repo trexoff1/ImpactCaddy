@@ -154,7 +154,7 @@ export default function ScoresPage() {
 
   return (
     <div className="fade-in">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
+      <div className="page-header">
         <div>
           <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", marginBottom: 4, letterSpacing: "-0.04em" }}>My Legacies</h1>
           <p style={{ color: "var(--color-text-secondary)" }}>Track the rounds that fuel your impact.</p>
@@ -170,7 +170,7 @@ export default function ScoresPage() {
           <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.125rem", marginBottom: 20 }}>
             {editingScoreId ? "Edit Score" : "Log a New Score"}
           </h2>
-          <form onSubmit={handleSubmit} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+          <form onSubmit={handleSubmit} className="form-grid">
             <div>
               <label className="input-label" htmlFor="course">Course Name</label>
               <input
@@ -259,79 +259,93 @@ export default function ScoresPage() {
           </button>
         </div>
       ) : (
-        <div className="glass-card" style={{ overflow: "hidden" }}>
-          <div className="table-responsive">
-            <table className="data-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Course</th>
-                <th>Stableford</th>
-                <th>Gross</th>
-                <th>Notes</th>
-                <th style={{ width: 110 }}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {scores.map((score) => (
-                <tr key={score.id}>
-                  <td style={{ whiteSpace: "nowrap" }}>
-                    {new Date(score.date_played).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </td>
-                  <td style={{ fontWeight: 500 }}>{score.course_name}</td>
-                  <td>
-                    <span
-                      className={`badge ${score.stableford_points >= 36 ? "badge-success" : "badge-info"}`}
-                    >
-                      {score.stableford_points} pts
-                    </span>
-                  </td>
-                  <td>{score.gross_score || "—"}</td>
-                  <td style={{ color: "var(--color-text-muted)", fontSize: "0.8125rem", maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {score.notes || "—"}
-                  </td>
-                  <td>
-                    <div style={{ display: "flex", gap: 10 }}>
-                      <button
-                        onClick={() => handleEdit(score)}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          color: "var(--color-primary-400)",
-                          cursor: "pointer",
-                          fontSize: "0.9375rem",
-                          opacity: 0.8,
-                        }}
-                        aria-label="Edit score"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        onClick={() => handleDelete(score.id)}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          color: "var(--color-danger-400)",
-                          cursor: "pointer",
-                          fontSize: "0.9375rem",
-                          opacity: 0.6,
-                        }}
-                        aria-label="Delete score"
-                      >
-                        🗑
-                      </button>
+        <>
+          {/* Desktop table */}
+          <div className="glass-card scores-table-desktop" style={{ overflow: "hidden" }}>
+            <div className="table-responsive">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Course</th>
+                    <th>Stableford</th>
+                    <th>Gross</th>
+                    <th>Notes</th>
+                    <th style={{ width: 110 }}></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {scores.map((score) => (
+                    <tr key={score.id}>
+                      <td style={{ whiteSpace: "nowrap" }}>
+                        {new Date(score.date_played).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </td>
+                      <td style={{ fontWeight: 500 }}>{score.course_name}</td>
+                      <td>
+                        <span className={`badge ${score.stableford_points >= 36 ? "badge-success" : "badge-info"}`}>
+                          {score.stableford_points} pts
+                        </span>
+                      </td>
+                      <td>{score.gross_score || "—"}</td>
+                      <td style={{ color: "var(--color-text-muted)", fontSize: "0.8125rem", maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {score.notes || "—"}
+                      </td>
+                      <td>
+                        <div style={{ display: "flex", gap: 10 }}>
+                          <button onClick={() => handleEdit(score)} style={{ background: "none", border: "none", color: "var(--color-primary-400)", cursor: "pointer", fontSize: "0.9375rem", opacity: 0.8 }} aria-label="Edit score">✏️</button>
+                          <button onClick={() => handleDelete(score.id)} style={{ background: "none", border: "none", color: "var(--color-danger-400)", cursor: "pointer", fontSize: "0.9375rem", opacity: 0.6 }} aria-label="Delete score">🗑</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="scores-cards-mobile" style={{ display: "none", flexDirection: "column", gap: 12 }}>
+            {scores.map((score) => (
+              <div key={score.id} className="glass-card" style={{ padding: "16px 20px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: "0.9375rem", marginBottom: 2 }}>{score.course_name}</div>
+                    <div style={{ color: "var(--color-text-muted)", fontSize: "0.75rem" }}>
+                      {new Date(score.date_played).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
                     </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                  </div>
+                  <span className={`badge ${score.stableford_points >= 36 ? "badge-success" : "badge-info"}`}>
+                    {score.stableford_points} pts
+                  </span>
+                </div>
+                <div style={{ display: "flex", gap: 16, marginBottom: 10, fontSize: "0.8125rem", color: "var(--color-text-secondary)" }}>
+                  {score.gross_score && <span>Gross: <strong style={{ color: "var(--color-text-primary)" }}>{score.gross_score}</strong></span>}
+                  {score.notes && <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1 }}>📝 {score.notes}</span>}
+                </div>
+                <div style={{ display: "flex", gap: 8, borderTop: "1px solid var(--color-border)", paddingTop: 10 }}>
+                  <button
+                    onClick={() => handleEdit(score)}
+                    className="btn btn-ghost btn-sm"
+                    style={{ flex: 1, justifyContent: "center" }}
+                  >
+                    ✏️ Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(score.id)}
+                    className="btn btn-ghost btn-sm"
+                    style={{ flex: 1, justifyContent: "center", color: "var(--color-danger-400)" }}
+                  >
+                    🗑 Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       {/* Summary stats */}

@@ -60,7 +60,7 @@ export default function AdminCharitiesPage() {
 
   return (
     <div className="fade-in" style={{ maxWidth: 1200, margin: "0 auto", padding: "40px 24px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 40 }}>
+      <div className="page-header" style={{ marginBottom: 32 }}>
         <div>
           <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "2.5rem", marginBottom: 8, letterSpacing: "-0.04em" }}>Mission Partners</h1>
           <p style={{ color: "var(--color-text-secondary)", fontSize: "1.125rem" }}>Curate the charitable missions that golfers fund through their rounds.</p>
@@ -101,6 +101,7 @@ export default function AdminCharitiesPage() {
       )}
 
       <div className="glass-card" style={{ overflow: "hidden" }}>
+        <div className="table-responsive">
         <table className="data-table">
           <thead>
             <tr style={{ fontFamily: "var(--font-heading)" }}>
@@ -122,7 +123,7 @@ export default function AdminCharitiesPage() {
                   <div style={{ fontWeight: 600, color: "var(--color-text-primary)", fontSize: "1.0625rem" }}>{c.name}</div>
                   {c.website_url && (
                     <a href={c.website_url} target="_blank" rel="noreferrer" style={{ display: "block", fontSize: "0.8125rem", color: "var(--color-impact-400)", textDecoration: "none", marginTop: 4, fontWeight: 500 }}>
-                      {new URL(c.website_url).hostname} ↗
+                      {(() => { try { return new URL(c.website_url).hostname; } catch { return c.website_url; } })()} ↗
                     </a>
                   )}
                 </td>
@@ -134,6 +135,7 @@ export default function AdminCharitiesPage() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

@@ -100,7 +100,7 @@ export default function DashboardPage() {
 
   return (
     <div className="fade-in">
-      <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "1.75rem", marginBottom: 8 }}>
+      <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.4rem, 4vw, 1.75rem)", marginBottom: 8 }}>
         Welcome back, {data.displayName} 👋
       </h1>
       <p style={{ color: "var(--color-text-secondary)", marginBottom: 32 }}>
@@ -163,7 +163,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent scores & Quick actions */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+      <div className="grid-2col">
         {/* Recent scores */}
         <div className="glass-card" style={{ padding: 28 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>

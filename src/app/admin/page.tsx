@@ -36,7 +36,7 @@ export default async function AdminHomePage() {
   );
 
   return (
-    <div className="fade-in" style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 24px" }}>
+    <div className="fade-in" style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 20px" }}>
       <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "2.50rem", marginBottom: 8, letterSpacing: "-0.05em" }}>
         Admin Headquarters
       </h1>

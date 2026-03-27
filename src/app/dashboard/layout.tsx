@@ -84,9 +84,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           bottom: 0,
           left: 0,
           zIndex: 200,
-          transform: mobileOpen ? "translateX(0)" : undefined,
         }}
-        className="sidebar"
+        className={`sidebar${mobileOpen ? " sidebar-open" : ""}`}
       >
         {/* Logo */}
         <div
@@ -114,6 +113,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           )}
           {collapsed && <span style={{ fontSize: "1.5rem", color: "var(--color-impact-400)" }}>✨</span>}
+          {/* Desktop collapse button */}
           <button
             onClick={() => setCollapsed(!collapsed)}
             style={{
@@ -122,10 +122,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               color: "var(--color-text-muted)",
               cursor: "pointer",
               fontSize: "1.25rem",
-              display: collapsed ? "none" : "block",
             }}
+            className="sidebar-collapse-btn"
           >
             ◀
+          </button>
+          {/* Mobile close button */}
+          <button
+            onClick={() => setMobileOpen(false)}
+            style={{
+              background: "none",
+              border: "none",
+              color: "var(--color-text-muted)",
+              cursor: "pointer",
+              fontSize: "1.25rem",
+              display: "none",
+            }}
+            className="sidebar-close-btn"
+            aria-label="Close menu"
+          >
+            ✕
           </button>
         </div>
 
@@ -145,7 +161,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   padding: collapsed ? "12px 0" : "10px 16px",
                   justifyContent: collapsed ? "center" : "flex-start",
                   borderRadius: "var(--radius-md)",
-                  color: active ? "var(--color-impact-300)" : "var(--color-text-secondary)",
+                  color: active ? "var(--color-impact-400)" : "var(--color-text-secondary)",
                   background: active ? "rgba(14,165,233,0.1)" : "transparent",
                   textDecoration: "none",
                   fontSize: "0.9375rem",
@@ -201,14 +217,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           transition: "margin-left 0.3s cubic-bezier(0.4,0,0.2,1)",
           minHeight: "100vh",
         }}
+        className="dashboard-main"
       >
         {/* Top bar (mobile) */}
         <div
           style={{
-            padding: "16px 24px",
+            padding: "14px 20px",
             display: "none",
             alignItems: "center",
+            gap: 12,
             borderBottom: "1px solid var(--color-border)",
+            background: "rgba(10,10,10,0.95)",
+            position: "sticky",
+            top: 0,
+            zIndex: 50,
           }}
           className="mobile-topbar"
         >
@@ -220,13 +242,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               color: "var(--color-text-primary)",
               fontSize: "1.5rem",
               cursor: "pointer",
+              lineHeight: 1,
+              padding: "4px 8px",
             }}
+            aria-label="Open menu"
           >
             ☰
           </button>
+          <div style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.1rem", color: "var(--color-text-primary)", display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ color: "var(--color-impact-400)" }}>✨</span> ImpactCaddy
+          </div>
         </div>
 
-        <div style={{ padding: "32px 32px 48px", maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ padding: "28px 20px 48px", maxWidth: 1200, margin: "0 auto" }}>
           {children}
         </div>
       </main>
@@ -234,16 +262,32 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <style>{`
         @media (max-width: 768px) {
           .sidebar {
-            transform: translateX(-100%) !important;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            width: 260px !important;
           }
-          .sidebar[style*="translateX(0)"] {
-            transform: translateX(0) !important;
+          .sidebar.sidebar-open {
+            transform: translateX(0);
+          }
+          .sidebar-collapse-btn {
+            display: none !important;
+          }
+          .sidebar-close-btn {
+            display: block !important;
           }
           .mobile-topbar {
             display: flex !important;
           }
-          main {
+          .dashboard-main {
             margin-left: 0 !important;
+          }
+        }
+        @media (min-width: 769px) {
+          .sidebar-close-btn {
+            display: none !important;
+          }
+          .sidebar-collapse-btn {
+            display: ${collapsed ? "none" : "block"};
           }
         }
       `}</style>

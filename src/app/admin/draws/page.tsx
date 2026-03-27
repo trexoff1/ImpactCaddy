@@ -118,7 +118,7 @@ export default function AdminDrawsPage() {
       </p>
 
       <div className="glass-card" style={{ padding: 20, marginBottom: 20 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr auto auto", gap: 12, alignItems: "end" }}>
+        <div className="admin-controls-grid">
           <div>
             <label className="input-label" htmlFor="drawId">Draw</label>
             <select id="drawId" className="input-field" value={drawId} onChange={(e) => setDrawId(e.target.value)}>
@@ -188,7 +188,7 @@ export default function AdminDrawsPage() {
           </div>
 
           {simulation.payoutPreview.jackpotCarryover && (
-            <p style={{ marginTop: 12, color: "var(--color-warning-400)", fontSize: "0.85rem" }}>
+            <p style={{ marginTop: 12, color: "var(--color-accent-400)", fontSize: "0.85rem" }}>
               No 5-match winner detected. Jackpot carryover applies.
             </p>
           )}

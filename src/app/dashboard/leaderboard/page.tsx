@@ -84,12 +84,12 @@ export default function LeaderboardPage() {
 
   return (
     <div className="fade-in">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
+      <div className="page-header">
         <div>
           <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "1.75rem", marginBottom: 4 }}>Leaderboard</h1>
           <p style={{ color: "var(--color-text-secondary)" }}>See how you stack up against other golfers.</p>
         </div>
-        <div style={{ display: "flex", gap: 6 }}>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           {(["week", "month", "all"] as const).map((p) => (
             <button
               key={p}
@@ -119,14 +119,7 @@ export default function LeaderboardPage() {
       ) : (
         <>
           {/* Top 3 podium */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr 1fr",
-              gap: 20,
-              marginBottom: 32,
-            }}
-          >
+          <div className="podium-grid">
             {leaderboard.slice(0, 3).map((entry) => (
               <div
                 className="glass-card"
@@ -157,6 +150,7 @@ export default function LeaderboardPage() {
           {/* Full leaderboard table */}
           {leaderboard.length > 3 && (
             <div className="glass-card" style={{ overflow: "hidden" }}>
+              <div className="table-responsive">
               <table className="data-table">
                 <thead>
                   <tr>
@@ -191,6 +185,7 @@ export default function LeaderboardPage() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           )}
         </>

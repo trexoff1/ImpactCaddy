@@ -55,13 +55,14 @@ export default function AdminWinnersPage() {
   }
 
   return (
-    <div className="fade-in" style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px" }}>
+    <div className="fade-in" style={{ maxWidth: 1200, margin: "0 auto", padding: "24px 16px" }}>
       <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "1.8rem", marginBottom: 8 }}>Winner Verification</h1>
       <p style={{ color: "var(--color-text-secondary)", marginBottom: 20 }}>
         Review claims and move payment state from pending to paid.
       </p>
 
       <div className="glass-card" style={{ overflow: "hidden" }}>
+        <div className="table-responsive">
         <table className="data-table">
           <thead>
             <tr style={{ fontFamily: "var(--font-heading)" }}>
@@ -132,6 +133,7 @@ export default function AdminWinnersPage() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
